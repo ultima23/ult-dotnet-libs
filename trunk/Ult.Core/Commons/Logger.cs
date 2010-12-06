@@ -399,7 +399,7 @@ namespace Ult.Commons
         /// </summary>
         /// <param name="message"></param>
         /// <param name="args"></param>
-        public void Debug(string message, object[] args)
+        public void Debug(string message, params object[] args)
         {
             Log(new LogEntry(LogEntryLevel.Debug, message, args));
         }
@@ -437,7 +437,7 @@ namespace Ult.Commons
         /// </summary>
         /// <param name="message"></param>
         /// <param name="args"></param>
-        public void Info(string message, object[] args)
+        public void Info(string message, params object[] args)
         {
             Log(new LogEntry(LogEntryLevel.Info, message, args));
         }
@@ -475,7 +475,7 @@ namespace Ult.Commons
         /// </summary>
         /// <param name="message"></param>
         /// <param name="args"></param>
-        public void Warning(string message, object[] args)
+        public void Warning(string message, params object[] args)
         {
             Log(new LogEntry(LogEntryLevel.Warning, message, args));
         }
@@ -513,7 +513,7 @@ namespace Ult.Commons
         /// </summary>
         /// <param name="message"></param>
         /// <param name="args"></param>
-        public void Error(string message, object[] args)
+        public void Error(string message, params object[] args)
         {
             Log(new LogEntry(LogEntryLevel.Error, message, args));
         }
@@ -551,7 +551,7 @@ namespace Ult.Commons
         /// </summary>
         /// <param name="message"></param>
         /// <param name="args"></param>
-        public void Fatal(string message, object[] args)
+        public void Fatal(string message, params object[] args)
         {
             Log(new LogEntry(LogEntryLevel.Fatal, message, args));
         }
