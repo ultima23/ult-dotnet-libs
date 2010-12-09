@@ -59,6 +59,7 @@
     <Compile Include="Commons\Counter.cs" />
     <Compile Include="Commons\Format.cs" />
     <Compile Include="Commons\InputBox.cs" />
+    <Compile Include="Commons\LinqSorter.cs" />
     <Compile Include="Commons\Logger.cs" />
     <Compile Include="Commons\Set.cs" />
     <Compile Include="Commons\Timer.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Commons\XmlStringBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\BytesUtils.cs" />
+    <Compile Include="Utils\DateTimeUtils.cs" />
     <Compile Include="Utils\DebugUtils.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\ImageUtils.cs" />
