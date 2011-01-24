@@ -12,31 +12,6 @@ namespace Ult.Util
   /// </summary>
   public static class UIUtils
   {
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-    {
-        Logger log = Logger.GetDefaultLogger();
-        Tracer.Debug((Exception) e.ExceptionObject);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-    {
-        Logger log = Logger.GetDefaultLogger();
-
-
-        Tracer.Debug(e.Exception);
-
-    }
   
     /// <summary>
     /// Retrieves the title to use in message boxes if the user doesnt specify a custom title
@@ -108,12 +83,6 @@ namespace Ult.Util
       }
     }
 
-
-    public static void RegisterErrorHandlers()
-    {
-        Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-        AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-    }
 
 
     /// <summary>
