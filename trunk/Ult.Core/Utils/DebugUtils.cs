@@ -5,7 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Ult.Core.Utils
+namespace Ult.Util
 {
     /// <summary>
     /// Collection of debugging utilities

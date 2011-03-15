@@ -3,7 +3,6 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using Ult.Commons;
-// using Ult.Protocols.L2;
 
 namespace Ult.Util
 {
