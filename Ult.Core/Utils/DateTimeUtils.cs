@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Globalization;
 
-namespace Ult.Core.Utils
+namespace Ult.Util
 {
     public class DateTimeUtils
     {
@@ -79,6 +79,46 @@ namespace Ult.Core.Utils
         }
 
         /// <summary>
+        /// Returns the name of the given month and the culture to use to retrieve it
+        /// </summary>
+        /// <param name="month">Month</param>
+        /// /// <param name="culture">Culture </param>
+        /// <returns>name of the month</returns>
+        public static string GetMonthName(int month, CultureInfo culture)
+        {
+            return DateTimeFormatInfo.GetInstance(culture).GetMonthName(month);
+        }
+
+        /// <summary>
+        /// Returns the name of the given month using the current culture
+        /// </summary>
+        /// <param name="month">Month</param>
+        /// <returns></returns>
+        public static string GetMonthName(int month)
+        {
+            return GetMonthName(month, CultureInfo.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Returns the name of the given date
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static string GetMonthName(DateTime date)
+        {
+            return GetMonthName(date.Month);
+        }
+
+        /// <summary>
+        /// Returns the name of the current month
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCurrentMonthName()
+        {
+            return GetMonthName(DateTime.Now.Month);
+        }
+
+        /// <summary>
         /// Gets the list of the names of the months using the current culture info
         /// </summary>
         /// <returns>List of the month names for the current culture</returns>
@@ -97,9 +137,46 @@ namespace Ult.Core.Utils
             string[] months = new string[12];
             for (int i = 1; i <= 12; i++)
             {
-                months[i - 1] = DateTimeFormatInfo.GetInstance(culture).GetMonthName(i);
+                months[i - 1] = GetMonthName(i, culture);
             }
             return months;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetFirstDayOfTheMonth()
+        {
+            return GetFirstDayOfTheMonth(DateTime.Today);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetFirstDayOfTheMonth(DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, 1);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetLastDayOfTheMonth()
+        {
+            return GetLastDayOfTheMonth(DateTime.Now);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetLastDayOfTheMonth(DateTime date)
+        {
+            return new DateTime(date.Year, date.Month + 1, 1).AddDays(-1);
         }
 
     }
