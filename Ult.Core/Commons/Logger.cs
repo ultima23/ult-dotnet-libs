@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Ult.Commons
 {
@@ -344,17 +345,23 @@ namespace Ult.Commons
         // -----------------------------------------------------------------------------------------------------------
 
         // -----------------------------------------------------------------------------------------------------------
-        #region PRIVATE METHODS
+        #region CONSTRUCTOR
 
         /// <summary>
         /// 
         /// </summary>
-        public Logger()
+        public Logger() : this(false) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="useTraceLogger"></param>
+        public Logger(bool useTraceLogger)
         {
             // Init
             _writers = new List<ILogWriter>();
             // Tracer logger
-            Register(new TraceLogger());
+            if (useTraceLogger) Register(new TraceLogger());
         }
 
         #endregion
@@ -619,6 +626,188 @@ namespace Ult.Commons
             System.Diagnostics.Trace.WriteLine(entry.Format());
         }
     
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class FileLogger : ILogWriter
+    {
+
+        // -----------------------------------------------------------------------------------------------------------
+        #region CONSTANTS
+
+        public const string DefaultFileName             = "";
+        public const string DefaultFileExtension        = "log";
+
+        public const string ParameterName               = "name";
+        public const string ParameterDirectory          = "directory";
+
+        #endregion
+        // -----------------------------------------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------------------------------
+        #region FIELDS
+
+        private object _lock;
+
+        private string _name;
+
+        private string _extension;
+
+        private string _directory;
+
+        #endregion
+        // -----------------------------------------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------------------------------
+        #region CONSTRUCTORS
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public FileLogger()
+        {
+            _lock = new object();
+        }
+
+        #endregion
+        // -----------------------------------------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------------------------------
+        #region PROPERTIES
+
+        /// <summary>
+        /// Name of the log, used to build log file name
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        /// <summary>
+        /// Extension of the log file to save
+        /// </summary>
+        public string Extension
+        {
+            get { return _extension; }
+            set { _extension = value; }
+        }
+
+        /// <summary>
+        /// Path of the directory to save log file
+        /// </summary>
+        public string Directory
+        {
+            get { return _directory; }
+            set { _directory = value; }
+        }
+
+        #endregion
+        // -----------------------------------------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------------------------------
+        #region PRIVATE METHODS
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected string GetFilePath()
+        {
+            string file_name = string.Empty;
+            if (String.IsNullOrEmpty(_name))
+            {
+                file_name = String.Format("{0:yyyyMMdd}.{1}", DateTime.Now, _extension);
+            }
+            else
+            {
+                file_name = String.Format("{0:yyyyMMdd}_{1}.{2}", DateTime.Now, _name, _extension);
+            }
+            
+            return Path.Combine(_directory, file_name);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected StreamWriter GetStreamWriter()
+        {
+            // File
+            string file = GetFilePath();
+            // Directory Check and creation 
+            if (!System.IO.Directory.Exists(_directory)) System.IO.Directory.CreateDirectory(_directory);
+            // File check and creation
+            if (!System.IO.File.Exists(file)) File.Create(file).Close();
+            return File.AppendText(file);
+        }
+
+        #endregion
+        // -----------------------------------------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------------------------------------
+        #region PUBLIC METHODS
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameters"></param>
+        public void Setup(Dictionary<string, object> parameters)
+        {
+            // Check for parameters
+            if (!parameters.ContainsKey(ParameterName))        throw new ArgumentException("Missing setup parameter \"name\". FileLogger setup failed.");
+            if (!parameters.ContainsKey(ParameterDirectory))   throw new ArgumentException("Missing setup parameter \"directory\". FileLogger setup failed.");
+            // Initialize
+            _name = parameters[ParameterName].ToString();
+            _directory = parameters[ParameterDirectory].ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        public void Write(ILogEntry entry)
+        {
+            try
+            {
+
+                lock (_lock)
+                {
+                    // Retrieve file to write
+                    // string file = CreateFile();
+                    //string file = GetFilePath();
+                    // file append
+                    StreamWriter sw = GetStreamWriter();
+                    sw.AutoFlush = true;
+                    sw.WriteLine(entry.Format());
+                    sw.Close();
+                    sw.Dispose();
+                }
+
+
+                /*
+                // Write to file
+                StreamWriter sw = new StreamWriter(file, true);
+                sw.WriteLine(entry.Format());
+                sw.Close();
+                sw.Dispose();
+                */
+            }
+            catch (Exception ex)
+            {
+                Tracer.Trace("FileLogger.Write() failed!");
+                // Log file fail
+                Tracer.Debug(ex);
+            }
+
+
+        }
+
+        #endregion
+        // -----------------------------------------------------------------------------------------------------------
+
     }
   
 }
