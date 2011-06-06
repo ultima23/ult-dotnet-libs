@@ -284,6 +284,74 @@ namespace Ult.Util
     {
       MessageBox.Show(String.Format(message, args), title, MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static bool YesNo(string message)
+    {
+        return YesNo(message, GetMessageBoxTitle(), new object[] {});
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public static bool YesNo(string message, params object[] args)
+    {
+        return YesNo(message, GetMessageBoxTitle(), args);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="title"></param>
+    /// <param name="buttons"></param>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public static bool YesNo(string message, string title, params object[] args)
+    {
+      return MessageBox.Show(String.Format(message, args), title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static DialogResult YesNoCancel(string message)
+    {
+        return YesNoCancel(message, GetMessageBoxTitle(), new object[] {});
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public static DialogResult YesNoCancel(string message, params object[] args)
+    {
+        return YesNoCancel(message, GetMessageBoxTitle(), args);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="title"></param>
+    /// <param name="buttons"></param>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public static DialogResult YesNoCancel(string message, string title, params object[] args)
+    {
+      return MessageBox.Show(String.Format(message, args), title, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+    }
   
   }
 }

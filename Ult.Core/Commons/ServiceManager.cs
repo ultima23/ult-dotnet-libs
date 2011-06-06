@@ -143,6 +143,21 @@ namespace Ult.Commons
         }
 
         /// <summary>
+        /// Check if a service of the given name exists
+        /// </summary>
+        /// <param name="name">Service name to check</param>
+        /// <returns>True if the service exists</returns>
+        public static bool Exists(string name)
+        {
+            ServiceController[] services = ServiceController.GetServices();
+            foreach (ServiceController service in services)
+            {
+                if (service.ServiceName == name) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="name"></param>
