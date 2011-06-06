@@ -12,7 +12,7 @@ namespace Ult.Util
   /// </summary>
   public class Utils
   {
-  
+
     /// <summary>
     /// Divisione di due interi, arrotndata per eccesso se c'è resto
     /// </summary>

@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
 
-namespace Ult.Utils
+namespace Ult.Util
 {
     public class SqlServerUtils
     {
@@ -21,7 +21,24 @@ namespace Ult.Utils
         private const string DEFAULT_START_MESSAGE          = "Database server is starting ...";
         private const string DEFAULT_STOP_MESSAGE           = "Database server is stopping ...";
 
-        
+        /// <summary>
+        /// Check if the given SQL Server instance service exists
+        /// </summary>
+        /// <param name="service">SQL Server instance Windows Service name</param>
+        /// <returns>True if the service exists</returns>
+        public static bool Exists(string service)
+        {
+            return ServiceManager.Exists(service);
+        }
+
+        /// <summary>
+        /// Check if the default SQL Server instance service exists
+        /// </summary>
+        /// <returns>True if the service exists</returns>
+        public static bool Exists()
+        {
+            return Exists(DEFAULT_SERVICE_NAME);
+        }
 
         public static bool StartServer()
         {
