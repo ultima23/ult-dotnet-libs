@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
+using System.Runtime.Remoting.Messaging;
 
 using Ult.Commons;
-using System.ComponentModel;
-using System.Runtime.Remoting.Messaging;
-using System.Threading;
+
 
 namespace Ult.Util
 {
+    /// <summary>
+    /// Microsoft SQL Server handling utilities
+    /// </summary>
     public class SqlServerUtils
     {
         
@@ -40,22 +44,67 @@ namespace Ult.Util
             return Exists(DEFAULT_SERVICE_NAME);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static bool StartServer()
         {
             return StartServer(DEFAULT_SERVICE_NAME, DEFAULT_START_TIMEOUT, DEFAULT_START_MESSAGE);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public static bool StartServer(int timeout)
         {
             return StartServer(DEFAULT_SERVICE_NAME, timeout, DEFAULT_START_MESSAGE);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static bool StartServer(int timeout, string message)
         {
             return StartServer(DEFAULT_SERVICE_NAME, timeout, message);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static bool StartServer(int timeout, string message, Form owner)
+        {
+            return StartServer(DEFAULT_SERVICE_NAME, timeout, message, owner);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static bool StartServer(string service, int timeout, string message)
+        {
+            return StartServer(service, timeout, message, null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static bool StartServer(string service, int timeout, string message, Form owner)
         {
             bool success = false;
             try
@@ -64,7 +113,7 @@ namespace Ult.Util
                 if (!ServiceManager.IsRunning(DEFAULT_SERVICE_NAME))
                 {
                     // Waiting form
-                    FormSqlServerWait wait_form = new FormSqlServerWait();
+                    FormSqlServerWait wait_form = new FormSqlServerWait(owner);
                     wait_form.Message = message;
                     // Start action
                     SqlServerAction action = new SqlServerAction();
@@ -120,23 +169,67 @@ namespace Ult.Util
             return success;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static bool StopServer()
         {
             return StopServer(DEFAULT_SERVICE_NAME, DEFAULT_STOP_TIMEOUT, DEFAULT_STOP_MESSAGE);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public static bool StopServer(int timeout)
         {
             return StopServer(DEFAULT_SERVICE_NAME, timeout, DEFAULT_STOP_MESSAGE);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static bool StopServer(int timeout, string message)
         {
             return StopServer(DEFAULT_SERVICE_NAME, timeout, message);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static bool StopServer(int timeout, string message, Form owner)
+        {
+            return StopServer(DEFAULT_SERVICE_NAME, timeout, message, owner);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static bool StopServer(string service, int timeout, string message)
+        {
+            return StopServer(service, timeout, message, null);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="timeout"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static bool StopServer(string service, int timeout, string message, Form owner)
         {
             bool success = false;
             try
@@ -145,7 +238,7 @@ namespace Ult.Util
                 if (ServiceManager.IsRunning(DEFAULT_SERVICE_NAME))
                 {
                     // Waiting form
-                    FormSqlServerWait wait_form = new FormSqlServerWait();
+                    FormSqlServerWait wait_form = new FormSqlServerWait(owner);
                     wait_form.Message = message;
                     // Start action
                     SqlServerAction action = new SqlServerAction();
@@ -172,10 +265,16 @@ namespace Ult.Util
             return success;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="database_name"></param>
+        /// <param name="database_file"></param>
+        /// <returns></returns>
         public static bool AttachDatabase(string database_name, string database_file)
         {
             bool success = false;
+            MessageBox.Show("TODO!");
             return success;
         }
 
@@ -291,8 +390,13 @@ namespace Ult.Util
             // -----------------------------------------------------------------------------------------------------------
             #region CONSTRUCTORS
 
-            public FormSqlServerWait()
+            public FormSqlServerWait() : this(null)
+            {   
+            }
+
+            public FormSqlServerWait(Form owner)
             {
+                if (owner != null) this.Owner = owner;
                 InitializeComponent();
             }
 

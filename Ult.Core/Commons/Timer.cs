@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Ult.Commons
 {
-  /// <summary>
-  /// 
-  /// </summary>
-  public class Timer
-  {
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Timer
+    {
 
     // -----------------------------------------------------------------------------------------------------------
     #region STATIC FIELDS
@@ -36,10 +36,10 @@ namespace Ult.Commons
     /// <returns>True if the name exists</returns>
     public static bool Exists(string name)
     {
-      lock (_locker)
-      {
-        return _intervalls.ContainsKey(name);
-      }
+        lock (_locker)
+        {
+            return _intervalls.ContainsKey(name);
+        }
     }
   
     /// <summary>
@@ -48,14 +48,14 @@ namespace Ult.Commons
     /// <param name="name"></param>
     public static void Start(string name)
     {
-      lock (_locker)
-      {
-        DateTime now = DateTime.Now;
-        if (!_intervalls.ContainsKey(name))
+        lock (_locker)
         {
-          _intervalls.Add(name, now);
+            DateTime now = DateTime.Now;
+            if (!_intervalls.ContainsKey(name))
+            {
+                _intervalls.Add(name, now);
+            }
         }
-      }
     }
 
     /// <summary>
@@ -64,13 +64,13 @@ namespace Ult.Commons
     /// <param name="name">name of the tracked interval</param>
     public static void Stop(string name)
     {
-      lock (_locker)
-      {
-        if (_intervalls.ContainsKey(name))
+        lock (_locker)
         {
-          _intervalls.Remove(name);
+            if (_intervalls.ContainsKey(name))
+            {
+                _intervalls.Remove(name);
+            }
         }
-      }
     }
 
     /// <summary>
@@ -79,8 +79,8 @@ namespace Ult.Commons
     /// <param name="name"></param>
     public static void Reset(string name)
     {
-      Stop(name);
-      Start(name);
+        Stop(name);
+        Start(name);
     }
 
     /// <summary>
@@ -90,10 +90,10 @@ namespace Ult.Commons
     /// <returns>Numero di millisecondi trascorsi dall'avvio dell'intervallo</returns>
     public static TimeSpan Elapsed(string name)
     {
-      lock (_locker)
-      {
-        return _intervalls.ContainsKey(name) ? DateTime.Now.Subtract(_intervalls[name]) : new TimeSpan();      
-      }
+        lock (_locker)
+        {
+            return _intervalls.ContainsKey(name) ? DateTime.Now.Subtract(_intervalls[name]) : new TimeSpan();      
+        }
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ namespace Ult.Commons
     /// <returns></returns>
     public static double Milliseconds(string name)
     {
-      return Elapsed(name).TotalMilliseconds;
+        return Elapsed(name).TotalMilliseconds;
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ namespace Ult.Commons
     /// <returns></returns>
     public static string Format(string name, string msg)
     {
-      return String.Format("{0} {1} ({2}ms)", new object[] { name, msg, Milliseconds(name) });
+        return String.Format("{0} {1} ({2}ms)", new object[] { name, msg, Milliseconds(name) });
     }
     
     /// <summary>
@@ -124,11 +124,11 @@ namespace Ult.Commons
     /// <param name="msg"></param>
     public static void Trace(string name, string msg)
     {
-      Tracer.Trace(Format(name, msg));
+        Tracer.Trace(Format(name, msg));
     }
 
     #endregion
     // -----------------------------------------------------------------------------------------------------------
   
-  }
+    }
 }
