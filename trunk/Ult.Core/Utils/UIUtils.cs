@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 using Matica.Commons;
 using Ult.Commons;
+using System.Drawing;
 
 namespace Ult.Util
 {
@@ -51,7 +52,7 @@ namespace Ult.Util
     {
       return String.Format("{0}", Application.ProductName);
     }
-  
+    
     /// <summary>
     /// 
     /// </summary>
@@ -61,6 +62,52 @@ namespace Ult.Util
       return Application.OpenForms[0];
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="form"></param>
+    /// <returns></returns>
+    public static int GetTitlebarHeight(Form form)
+    {
+        return  form.Height - form.ClientSize.Height - (2 * GetBorderWidth(form));
+    }
+
+    /// <summary>
+    /// Moves the given form to center his form owner, if doesn't has the owner 
+    /// centers it in the screen
+    /// </summary>
+    /// <param name="form"></param>
+    /// <returns></returns>
+    public static void Center(Form form)
+    {
+
+        Rectangle owner_rect = form.Owner != null ? form.Owner.RectangleToScreen(form.Owner.ClientRectangle) 
+                                                  : Screen.PrimaryScreen.Bounds;
+
+        Rectangle form_rect = form.ClientRectangle;
+
+        
+        int y = owner_rect.Height > form_rect.Height ? owner_rect.Y + ((owner_rect.Height - form_rect.Height) / 2)
+                                                     : owner_rect.Y - ((form_rect.Height - owner_rect.Height) / 2);
+
+        int x = owner_rect.Width > form_rect.Width ? owner_rect.X + ((owner_rect.Width - form_rect.Width) / 2)
+                                                   : owner_rect.X - ((form_rect.Width - owner_rect.Width) / 2);
+
+        // Positioning
+        form.Left = x > 0 ? x : 0;
+        form.Top  = y > 0 ? y : 0;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="form"></param>
+    /// <returns></returns>
+    public static int GetBorderWidth(Form form)
+    {
+        return (form.Width - form.ClientSize.Width) / 2;
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -82,8 +129,6 @@ namespace Ult.Util
         SetDefaultIcon(Application.OpenForms[i]);
       }
     }
-
-
 
     /// <summary>
     /// 
